@@ -6,9 +6,17 @@ def take():
     directory = input("Enter the directory:")
     return directory
 
-def find_file():
-    pass
+def find_file(directory):
+    file_name = input("Enter the name of the file: ")
+    found = 0
+    for file in directory.rglob("*"):
+        if file.is_file() and file_name.lower() == file.stem.lower():
+            print("Found : ",file)
+            found = 1
+    if(not found):
+       print("File not found!")
 
+    
 print(40*"=" )
 print(" "*14,end="")
 print("File Forge" )
@@ -33,10 +41,13 @@ if(__name__ == "__main__"):
                     "\n4. Find Duplicate Files " \
                     "\n5. Analyze Storage " \
                     "\n6. Change Directory " \
-                    "\n7. Back to Main Menu  ")
+                    "\n7. Back to Main Menu  \n Enter the choice:")
 
                     if ch2 == "1":
-                        find_file()
+                        pass
+
+                    if ch2 == "2":
+                        find_file(folder)
                 
 
         elif(ch1 == "2"):
