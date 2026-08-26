@@ -120,7 +120,6 @@ def take_dir():
             
             else:
                 print("Enter a valid Choice")                         
-
             
 print(40*"=" )
 print(" "*14,end="")
@@ -131,8 +130,3 @@ print("")
 if(__name__ == "__main__"):
      take_dir()
     
-                    
-                            
-
-
-        
