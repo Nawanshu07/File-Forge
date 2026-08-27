@@ -5,25 +5,36 @@ import shutil
 
 def find_file(directory):
     file_name = input("Enter the name of the file: ")
-    found = 0
-    for file in directory.rglob("*"):
+
+    results = []
+
+    for file in Path(directory).rglob("*"):
+
         if file.is_file() and file_name.lower() == file.stem.lower():
-            print("Found : ",file)
-            found = 1
-    if(not found):
-       print("File not found!")
+            results.append(file)
 
+    if not results:
+        print("File not found!")
+        return None
 
-def operations(folder):
-    file = input("Enter path of file for operations(0 to exit): ")
-    if file.strip()=="0":
-        return
+    print("\nFound files:")
+
+    for i, file in enumerate(results, start=1):
+        print(f"{i}. {file}")
+
+    return results
+
+def duplicates(directory):
+    pass
+
+def operations(file):
+    
     path = Path(file)
     if path.is_file():
         while 1:
-            print("\n" + 30 * "=")
+            print("\n" + 40 * "=")
             print("File Operations")
-            print(30 * "=")
+            print(40 * "=")
             print("1. Open File")
             print("2. Copy File")
             print("3. Move File")
@@ -55,10 +66,13 @@ def operations(folder):
                     print("File deletion canceled.")
 
             elif ch == "6":
-                pass
+                print(f"File Name: {path.name}")
+                print(f"File Size: {path.stat().st_size} bytes")
+                print(f"Last Modified: {path.stat().st_mtime}")
+                print("Extension:", path.suffix)
 
             elif ch == "7":
-                main_menu(folder)
+                main_menu(path.parent)
 
             elif ch == "0":
                 return
@@ -75,21 +89,23 @@ def main_menu(folder):
         "\n5. Analyze Storage " \
         "\n6. Change Directory " \
         "\n7. Back to Main Menu  \nEnter the choice:")
+        print()
     
         if ch2.strip() == "1":
             pass
     
         elif ch2.strip() == "2":
-            find_file(folder)
-            ch3 = input("\nPress 1 to perform file operations: ")
+            result = find_file(folder)
+            ch3 = input("\nPress 1 to perform operations on the file or any other key to return to main menu:")
             if ch3.strip() == "1":
-                operations(folder)
+                ch4 = int(input("Enter the position of the file to perform operations on: "))
+                operations(result[ch4 - 1])
             
         elif ch2.strip() == "3":
-            operations(folder)
+            operations(file=input("Enter the full path of the file to perform operations on: "))
     
         elif ch2.strip() == "4":
-            pass
+            duplicates(folder)
     
         elif ch2.strip() == "5":
             pass
@@ -104,9 +120,11 @@ def take_dir():
     while 1:
             
             ch1 = input("1. Select Directory \n2. Exit \nChose an option(1 or 2):")
+            print()
             if(ch1 == "1"):
                 while 1:
                     directory = input("Enter dir(press 0 to return to main menu) :")
+                    print()
                     if directory.strip() == "0":
                         break
                     folder = Path(directory)
@@ -121,10 +139,10 @@ def take_dir():
             else:
                 print("Enter a valid Choice")                         
             
-print(40*"=" )
-print(" "*14,end="")
+print(80*"=" )
+print(" "*34,end="")
 print("File Forge" )
-print(40*"=")
+print(80*"=")
 print("")
 
 if(__name__ == "__main__"):
