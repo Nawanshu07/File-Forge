@@ -45,6 +45,7 @@ def operations(file):
 
             ch = input("Enter your choice(0 to exit): ")
 
+            
             if ch == "1":
                 os.startfile(path)
 
@@ -66,10 +67,12 @@ def operations(file):
                     print("File deletion canceled.")
 
             elif ch == "6":
+                print()
                 print(f"File Name: {path.name}")
                 print(f"File Size: {path.stat().st_size} bytes")
                 print(f"Last Modified: {path.stat().st_mtime}")
                 print("Extension:", path.suffix)
+                print()
 
             elif ch == "7":
                 main_menu(path.parent)
@@ -80,15 +83,22 @@ def operations(file):
             else:
                 print("Invalid choice!")
 
+def system_info():
+    print("1. Check Parent Disk Storage info")
+    print("2. Check Overall Storage info")
+    print("3. Main menu")
+    ch = int(input())
+
 def main_menu(folder):
     while 1:
-        ch2 = input("1. Organize Files " \
-        "\n2. Find Files " \
-        "\n3. File Operations " \
-        "\n4. Find Duplicate Files " \
-        "\n5. Analyze Storage " \
-        "\n6. Change Directory " \
-        "\n7. Back to Main Menu  \nEnter the choice:")
+        print("1. Organize Files ")
+        print("2. Find Files ")
+        print("3. File Operations ")
+        print("4. Find Duplicate Files ")
+        print("5. Analyze Storage ")
+        print("6. Change Directory ")
+        print("7. Back to Main Menu")
+        ch2 = input("Enter choice: ")
         print()
     
         if ch2.strip() == "1":
@@ -108,7 +118,7 @@ def main_menu(folder):
             duplicates(folder)
     
         elif ch2.strip() == "5":
-            pass
+            system_info()
     
         elif ch2.strip() == "6":
             break
@@ -117,6 +127,7 @@ def main_menu(folder):
             break
 
 def take_dir():
+
     while 1:
             
             ch1 = input("1. Select Directory \n2. Exit \nChose an option(1 or 2):")
@@ -146,5 +157,8 @@ print(80*"=")
 print("")
 
 if(__name__ == "__main__"):
-     take_dir()
+    try:
+        take_dir()
+    except FileNotFoundError as f:
+        print("Either file is deleted or file not found")
     
