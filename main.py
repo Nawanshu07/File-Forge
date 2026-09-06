@@ -1,7 +1,7 @@
-
 from pathlib import Path
 import os
 import shutil
+import hashlib
 
 def find_file(directory):
     file_name = input("Enter the name of the file: ")
@@ -24,7 +24,41 @@ def find_file(directory):
 
     return results
 
+def get_hash(file_path):
+    hasher = hashlib.md5()
+    with open(file_path,"rb") as f:
+        while chunk := f.read(65536):
+            hasher.update(chunk)
+    return hasher.hexdigest()
+
 def duplicates(directory):
+    hash_map = {}
+    dup = []
+    for file in Path(directory).rglob("*"):
+        if file.is_file():
+            file_hash = get_hash(file)
+            if file_hash in hash_map:
+                hash_map[file_hash].append(file)
+            else:
+                hash_map[file_hash] = [file]
+
+    for file_hash, files in hash_map.items():
+        print("\nPlease Wait....")
+        if len(files) > 1:
+            print("\nDUPLICATEs FOUND:")
+            for f in files:
+                print(f"-->{f}")
+                dup.append(f)
+            ch = int(input("\nEnter 1 to remove all duplicates(0 to exit):"))
+            if ch == 1:
+                for i in dup[1:]:
+                    os.remove(i)
+        else:
+            print("\nNo Duplicates were found")
+    print("\n")
+
+    
+def Organize_files(directory):
     pass
 
 def operations(file):
@@ -129,15 +163,17 @@ def main_menu(folder):
 def take_dir():
 
     while 1:
-            
-            ch1 = input("1. Select Directory \n2. Exit \nChose an option(1 or 2):")
+
+            print("1. Select Directory")
+            print("2. Exit")
+            ch1 = input("Choose an option(1 or 2):")
             print()
             if(ch1 == "1"):
                 while 1:
                     directory = input("Enter dir(press 0 to return to main menu) :")
                     print()
                     if directory.strip() == "0":
-                        break
+                        break   
                     folder = Path(directory)
                     if( not folder.exists() or not folder.is_dir()):
                         print("\nEnter a valid Directory!\n")
